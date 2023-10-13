@@ -30,6 +30,13 @@
 			<artifactId>gt-swing</artifactId>
 			<version>${geotools.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.locationtech.jts</groupId>
+			<artifactId>jts-core</artifactId>
+			<version>1.18.0</version> <!-- Esta é a versão mais recente até a minha última atualização em setembro 
+				de 2021 -->
+		</dependency>
+
 	</dependencies>
 	<repositories>
 		<repository>

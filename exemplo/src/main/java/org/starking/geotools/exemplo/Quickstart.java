@@ -6,6 +6,12 @@ import java.util.logging.Logger;
 import org.geotools.api.data.FileDataStore;
 import org.geotools.api.data.FileDataStoreFinder;
 import org.geotools.api.data.SimpleFeatureSource;
+import org.geotools.api.style.Style;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.Layer;
+import org.geotools.map.MapContent;
+import org.geotools.styling.SLD;
+import org.geotools.swing.JMapFrame;
 import org.geotools.swing.data.JFileDataStoreChooser;
 
 /**
@@ -28,6 +34,15 @@ public class Quickstart {
 		
 		FileDataStore store = FileDataStoreFinder.getDataStore(file);
 		SimpleFeatureSource featureSource = store.getFeatureSource();
+		
+		MapContent map = new MapContent();
+		map.setTitle("Iniciando Projeto");
+		
+		Style style = SLD.createSimpleStyle(featureSource.getSchema());
+		Layer layer = new FeatureLayer(featureSource, style);
+		map.addLayer(layer);
+		
+		JMapFrame.showMap(map);
 	}
 
 }
