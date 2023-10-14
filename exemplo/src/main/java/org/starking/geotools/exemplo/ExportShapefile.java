@@ -10,8 +10,9 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.feature.simple.SimpleFeatureType;
 import org.geotools.api.referencing.FactoryException;
 import org.geotools.api.referencing.NoSuchAuthorityCodeException;
+import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
-import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.geotools.referencing.CRS;
@@ -24,18 +25,35 @@ import org.locationtech.jts.geom.Point;
  */
 public class ExportShapefile {
 
+	private static final String EPSG4326 = "GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\","
+			+ "SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]]"
+			+ ",AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\","
+			+ "\"8901\"]],UNIT[\"degree\",0.01745329251994328,AUTHORITY[\"EPSG\",\"9122\"]]"
+			+ ",AUTHORITY[\"EPSG\",\"4326\"]]";
+   
 	public static void main(String[] args) throws IOException, NoSuchAuthorityCodeException, FactoryException {
+		
+		 CoordinateReferenceSystem worldCRS = CRS.parseWKT(EPSG4326);
 		// Criar um novo Shapefile
-		File newShapefile = new File("caminho/do/novo/shapefile.shp");
+		File newShapefile = new File("C:\\Users\\pedro\\Downloads\\shapefile\\shapefile.shp");
+		
+//		CoordinateReferenceSystem cabedeloCRS = CRS.decode("EPSG:4326");
 
+		// Criar uma Geometry (por exemplo, um ponto)
+		GeometryFactory geometryFactory = new GeometryFactory();
+		Coordinate coordinate = new Coordinate(10.0, 20.0); // Latitude e longitude de exemplo
+		Point ponto = geometryFactory.createPoint(coordinate);
+
+		
 		// Configurar o tipo de dado para o novo Shapefile
 		SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
 		builder.setName("MeuShapefile");
-		builder.setCRS(CRS.decode("EPSG:4326")); // Define o sistema de coordenadas, substitua com o CRS desejado
+		builder.setCRS(worldCRS); // Define o sistema de coordenadas, substitua com o CRS desejado
 //        builder.add("geometry", com.vividsolutions.jts.geom.Geometry.class);
-		builder.add("geometry", org.locationtech.jts.geom.Geometry.class);
+//		builder.add("geometry", org.locationtech.jts.geom.Geometry.class);
 		builder.add("atributo1", String.class);
 		builder.add("atributo2", Integer.class);
+		builder.add("geometry", Point.class);
 
 		SimpleFeatureType featureType = builder.buildFeatureType();
 
@@ -51,12 +69,7 @@ public class ExportShapefile {
 
 		// Adicionar Features ao Shapefile (substitua isso com suas próprias features)
 		SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
-		SimpleFeatureCollection collection = newDataStore.getFeatureSource().getFeatures();
-
-		// Criar uma Geometry (por exemplo, um ponto)
-		GeometryFactory geometryFactory = new GeometryFactory();
-		Coordinate coordinate = new Coordinate(10.0, 20.0); // Latitude e longitude de exemplo
-		Point ponto = geometryFactory.createPoint(coordinate);
+		DefaultFeatureCollection collection = new DefaultFeatureCollection(null, featureType);
 
 		// Adicionar a Geometry à feature
 		featureBuilder.add(ponto);
@@ -64,11 +77,11 @@ public class ExportShapefile {
 		// Agora, a feature contém a Geometry
 		SimpleFeature featureGeometry = featureBuilder.buildFeature(null);
 
-		featureBuilder.add(featureGeometry); // Substitua com sua geometria
-		featureBuilder.add("Valor1"); // Substitua com seus próprios valores
-		featureBuilder.add(123); // Substitua com seus próprios valores
+		featureBuilder.add(featureGeometry); // Sua geometria
+		featureBuilder.add("Valor1"); // Seus próprios valores
+		featureBuilder.add(123); // Seus próprios valores
 		SimpleFeature feature = featureBuilder.buildFeature(null);
-		((SimpleFeatureBuilder) collection).add(feature);
+		collection.add(feature);
 
 		// Salvar as alterações no Shapefile
 		newDataStore.dispose();
