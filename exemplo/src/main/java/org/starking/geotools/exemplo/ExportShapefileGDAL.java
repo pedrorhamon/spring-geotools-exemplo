@@ -19,6 +19,13 @@ public class ExportShapefileGDAL {
 			System.err.println("Erro ao abrir o shapefile.");
 			System.exit(1);
 		}
+		
+		// Obtém o número de camadas (normalmente há apenas uma no shapefile)
+        int numLayers = ds.GetLayerCount();
+        
+        for (int i = 0; i < numLayers; i++) {
+        	
+        }
 	}
 
 }
