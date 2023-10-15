@@ -46,6 +46,11 @@
 			<version>1.18.0</version> <!-- Esta é a versão mais recente até a minha última atualização em setembro 
 				de 2021 -->
 		</dependency>
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-kml</artifactId>
+			<version>${geotools.version}</version> <!-- Substitua pela versão do GeoTools que você está utilizando -->
+		</dependency>
 
 	</dependencies>
 	<repositories>
