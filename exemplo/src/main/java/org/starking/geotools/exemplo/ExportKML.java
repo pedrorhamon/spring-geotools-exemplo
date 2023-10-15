@@ -27,7 +27,7 @@ public class ExportKML {
 
 		// Salvando o KML
 		try {
-			kml.marshal(new File("C:\\caminho\\para\\seu\\arquivo.kml"));
+			kml.marshal(new File("C:\\Users\\pedro\\Downloads\\arquivo.kml"));
 			System.out.println("Arquivo KML exportado com sucesso.");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
