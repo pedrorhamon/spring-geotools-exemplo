@@ -78,7 +78,7 @@ public class ExportShapefile {
 		SimpleFeature featureGeometry = featureBuilder.buildFeature(null);
 
 		featureBuilder.add(featureGeometry); // Sua geometria
-		featureBuilder.add("Valor1"); // Seus próprios valores
+		featureBuilder.add("ValorAleatorio"); // Seus próprios valores
 		featureBuilder.add(123); // Seus próprios valores
 		SimpleFeature feature = featureBuilder.buildFeature(null);
 		collection.add(feature);
